@@ -26,7 +26,7 @@ class MatchsComp
     /**
      * @ORM\Id()
      * @ORM\ManyToOne(targetEntity="App\Entity\Champions")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(name="championName", referencedColumnName="name")
      */
     private $championName;
 
@@ -59,7 +59,7 @@ class MatchsComp
         return $this->championName;
     }
 
-    public function setChampionId(?Champions $championName): self
+    public function setChampionName(?Champions $championName): self
     {
         $this->championName = $championName;
 
