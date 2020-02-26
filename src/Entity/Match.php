@@ -6,8 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MatchsRepository")
+ * @ORM\Table(name="`match`")
  */
-class Matchs
+class Match
 {
     /**
      * @ORM\Id()
@@ -29,16 +30,6 @@ class Matchs
      * @ORM\Column(type="string", length=255)
      */
     private $duration;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\MatchsComp", mappedBy="MatchId", cascade={"persist", "remove"})
-     */
-    private $comp;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\MatchsStats", mappedBy="MatchId", cascade={"persist", "remove"})
-     */
-    private $stats;
 
     public function getId(): ?string
     {
@@ -84,40 +75,6 @@ class Matchs
     public function setDuration(string $duration): self
     {
         $this->duration = $duration;
-
-        return $this;
-    }
-
-    public function getComp(): ?MatchsComp
-    {
-        return $this->comp;
-    }
-
-    public function setComp(MatchsComp $comp): self
-    {
-        $this->comp = $comp;
-
-        // set the owning side of the relation if necessary
-        if ($comp->getMatchId() !== $this) {
-            $comp->setMatchId($this);
-        }
-
-        return $this;
-    }
-
-    public function getStats(): ?MatchsStats
-    {
-        return $this->stats;
-    }
-
-    public function setStats(MatchsStats $stats): self
-    {
-        $this->stats = $stats;
-
-        // set the owning side of the relation if necessary
-        if ($stats->getMatchId() !== $this) {
-            $stats->setMatchId($this);
-        }
 
         return $this;
     }

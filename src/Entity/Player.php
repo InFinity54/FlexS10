@@ -6,51 +6,41 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PlayersRepository")
+ * @ORM\Table(name="`player`")
  */
-class Players
+class Player
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255)
      */
-    private $id;
+    private $nickname;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Nickname;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $Name;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    private $name;
 
     public function getNickname(): ?string
     {
-        return $this->Nickname;
+        return $this->nickname;
     }
 
-    public function setNickname(string $Nickname): self
+    public function setNickname(string $nickname): self
     {
-        $this->Nickname = $Nickname;
+        $this->nickname = $nickname;
 
         return $this;
     }
 
     public function getName(): ?string
     {
-        return $this->Name;
+        return $this->name;
     }
 
-    public function setName(string $Name): self
+    public function setName(string $name): self
     {
-        $this->Name = $Name;
+        $this->name = $name;
 
         return $this;
     }

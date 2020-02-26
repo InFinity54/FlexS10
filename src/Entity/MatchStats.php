@@ -6,22 +6,23 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MatchsStatsRepository")
+ * @ORM\Table(name="`match_stats`")
  */
-class MatchsStats
+class MatchStats
 {
     /**
      * @ORM\Id()
-     * @ORM\OneToOne(targetEntity="App\Entity\Matchs", inversedBy="stats", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Match")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $matchId;
+    private $match;
 
     /**
      * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity="App\Entity\Players")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Player")
+     * @ORM\JoinColumn(name="player", referencedColumnName="nickname")
      */
-    private $playerId;
+    private $player;
 
     /**
      * @ORM\Column(type="integer")
@@ -63,26 +64,26 @@ class MatchsStats
      */
     private $rawDamage;
 
-    public function getMatchId(): ?Matchs
+    public function getMatch(): ?Match
     {
-        return $this->matchId;
+        return $this->match;
     }
 
-    public function setMatchId(Matchs $matchId): self
+    public function setMatch(Match $match): self
     {
-        $this->matchId = $matchId;
+        $this->match = $match;
 
         return $this;
     }
 
-    public function getPlayerId(): ?Players
+    public function getPlayer(): ?Player
     {
-        return $this->playerId;
+        return $this->player;
     }
 
-    public function setPlayerId(?Players $playerId): self
+    public function setPlayer(?Player $player): self
     {
-        $this->playerId = $playerId;
+        $this->player = $player;
 
         return $this;
     }

@@ -6,8 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ChampionsRepository")
+ * @ORM\Table(name="`champion`")
  */
-class Champions
+class Champion
 {
     /**
      * @ORM\Id()

@@ -1,23 +1,23 @@
 <ul class="navbar-nav bg-dark sidebar sidebar-dark accordion" id="accordionSidebar">
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="https://flexs10.infinity54.fr">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url('homepage') }}">
         <div class="sidebar-brand-icon">
-            <img src="https://flexs10.infinity54.fr/assets/img/lol_icon.png" alt="" width="50px" height="50px" />
+            <img src="{{ asset('img/lol_icon.png') }}" alt="" width="50px" height="50px" />
         </div>
     </a>
 
     <hr class="sidebar-divider my-0">
 
-    <li class="nav-item">
-    <a class="nav-link" href="https://flexs10.infinity54.fr">
-        <i class="far fa-chart-bar"></i>
-        <span>Statistiques générales</span>
-    </a>
+    <li class="nav-item {% if app.request.attributes.get('_route') starts with 'homepage' %}active{% endif %}">
+        <a class="nav-link" href="{{ url('homepage') }}">
+            <i class="far fa-chart-bar"></i>
+            <span>Statistiques générales</span>
+        </a>
     </li>
 
     <li class="nav-item">
-    <a class="nav-link" href="https://flexs10.infinity54.fr/matchhistory">
-        <i class="fas fa-gamepad"></i>
-        <span>Historique de parties</span>
-    </a>
+        <a class="nav-link" href="#">
+            <i class="fas fa-gamepad"></i>
+            <span>Historique de parties</span>
+        </a>
     </li>
 </ul>
