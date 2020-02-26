@@ -59,12 +59,42 @@ class AppController extends AbstractController
     }
 
 
-    /*public function test()
+    /**
+     * @Route("/test", name="test")
+     */
+    public function test()
     {
         $entityManager = $this->getDoctrine()->getManager();
         $json = json_decode(file_get_contents("C:\\laragon\\www\\flexs10\\public\\games\\4381384801.json"));
         $matchid = "4381384801";
         $playerstosave = [];
+
+        $playerCoco = new Player();
+        $playerCoco->setNickname("InFinity54");
+        $playerCoco->setName("Coco");
+        $entityManager->merge($playerCoco);
+
+        $playerAxel = new Player();
+        $playerAxel->setNickname("TheTøxine");
+        $playerAxel->setName("Axel");
+        $entityManager->merge($playerAxel);
+
+        $playerKarl = new Player();
+        $playerKarl->setNickname("nekkiro");
+        $playerKarl->setName("Karl");
+        $entityManager->merge($playerKarl);
+
+        $playerChris = new Player();
+        $playerChris->setNickname("Xevort");
+        $playerChris->setName("Chris");
+        $entityManager->merge($playerChris);
+
+        $playerKoroko = new Player();
+        $playerKoroko->setNickname("Kørøkø");
+        $playerKoroko->setName("Koroko");
+        $entityManager->merge($playerKoroko);
+
+        $entityManager->flush();
 
         foreach ($entityManager->getRepository(Player::class)->findAll() as $player)
         {
@@ -124,7 +154,7 @@ class AppController extends AbstractController
 
                 $match = new Match();
                 $match->setId($matchid);
-                $match->setDate($date);
+                $match->setDateTime($date);
                 $match->setDuration($matchduration);
                 $match->setResult($matchresult);
                 $entityManager->merge($match);
@@ -152,5 +182,5 @@ class AppController extends AbstractController
         }
 
         return $this->redirectToRoute("homepage");
-    }*/
+    }
 }

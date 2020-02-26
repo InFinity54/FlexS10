@@ -17,9 +17,9 @@ class Match
     private $id;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
-    private $date;
+    private $datetime;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -43,14 +43,14 @@ class Match
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDateTime(): ?\DateTimeInterface
     {
-        return $this->date;
+        return $this->datetime;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setDateTime(\DateTimeInterface $datetime): self
     {
-        $this->date = $date;
+        $this->datetime = $datetime;
 
         return $this;
     }
