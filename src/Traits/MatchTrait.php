@@ -1,107 +1,36 @@
 <?php
-namespace App\Controller;
+namespace App\Traits;
 
 use App\Entity\Champion;
 use App\Entity\Match;
 use App\Entity\MatchComp;
 use App\Entity\MatchStats;
 use App\Entity\Player;
-use App\Traits\ChampionTrait;
 use DateTime;
 use DateTimeZone;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Response;
+use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\HttpKernel\KernelInterface;
 
-class AppController extends AbstractController
+Trait MatchTrait
 {
     use ChampionTrait;
+    private $appKernel;
 
-
-    /**
-     * @Route("/", name="homepage")
-     */
-    public function index()
+    public function __construct(KernelInterface $appKernel)
     {
-        $bestKills = $this->getDoctrine()->getRepository(MatchStats::class)->getBestKills();
-        $bestDeaths = $this->getDoctrine()->getRepository(MatchStats::class)->getBestDeaths();
-        $bestAssists = $this->getDoctrine()->getRepository(MatchStats::class)->getBestAssists();
-        $kdas = $this->getDoctrine()->getRepository(MatchStats::class)->getKdas();
-        $playedChamps = $this->getDoctrine()->getRepository(MatchComp::class)->getPlayedChamps();
-        $playedChampsLabels = [];
-        $playedChampsValues = [];
-        $playedChampsRecord = 0;
-
-        if ($playedChamps)
-        {
-            foreach ($playedChamps as $playedChamp)
-            {
-                $playedChampsLabels[] = $playedChamp["champion"];
-                $playedChampsValues[] = $playedChamp["number"];
-                if (intval($playedChamp["number"]) > intval($playedChampsRecord))
-                {
-                    $playedChampsRecord = $playedChamp["number"];
-                }
-            }
-        }
-
-        return $this->render("index.html.twig", [
-            "bestkills" => $bestKills,
-            "bestdeaths" => $bestDeaths,
-            "bestassists" => $bestAssists,
-            "kdas" => $kdas,
-            "playedchamps" => [
-                "labels" => $playedChampsLabels,
-                "values" => $playedChampsValues,
-                "record" => $playedChampsRecord
-            ]
-        ]);
+        $this->appKernel = $appKernel;
     }
 
-
-    /**
-     * @Route("/test", name="test")
-     */
-    public function test()
+    protected function saveMatch(ObjectManager $entityManager, string $jsonString)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $json = json_decode(file_get_contents("C:\\laragon\\www\\flexs10\\public\\games\\4381384801.json"));
-        $matchid = "4381384801";
-        $playerstosave = [];
-
-        $playerCoco = new Player();
-        $playerCoco->setNickname("InFinity54");
-        $playerCoco->setName("Coco");
-        $entityManager->merge($playerCoco);
-
-        $playerAxel = new Player();
-        $playerAxel->setNickname("TheTøxine");
-        $playerAxel->setName("Axel");
-        $entityManager->merge($playerAxel);
-
-        $playerKarl = new Player();
-        $playerKarl->setNickname("nekkiro");
-        $playerKarl->setName("Karl");
-        $entityManager->merge($playerKarl);
-
-        $playerChris = new Player();
-        $playerChris->setNickname("Xevort");
-        $playerChris->setName("Chris");
-        $entityManager->merge($playerChris);
-
-        $playerKoroko = new Player();
-        $playerKoroko->setNickname("Kørøkø");
-        $playerKoroko->setName("Koroko");
-        $entityManager->merge($playerKoroko);
-
-        $entityManager->flush();
-
+        $json = json_decode($jsonString);
         foreach ($entityManager->getRepository(Player::class)->findAll() as $player)
         {
             $playerstosave[] = $player->getNickname();
         }
 
         $date = new DateTime(date("Y-m-d H:i:s", substr($json->gameCreation, 0, strlen($json->gameCreation) - 3)), new DateTimeZone("Europe/Paris"));
+        $matchid = $json->gameId;
         $matchresult = "";
         $matchduration = intdiv(intval($json->gameDuration), 60).":".(intval($json->gameDuration) % 60);
 
@@ -181,6 +110,11 @@ class AppController extends AbstractController
             }
         }
 
-        return $this->redirectToRoute("homepage");
+        $this->saveMatchToServer($jsonString, $matchid);
+    }
+
+    protected function saveMatchToServer(string $jsonString, string $matchid)
+    {
+        file_put_contents(realpath($this->appKernel->getProjectDir()."/files/games/")."/".$matchid.".json", $jsonString);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 namespace App\Traits;
 
-Trait ChampionsTrait
+Trait ChampionTrait
 {
     protected function getChampionName($champid)
     {

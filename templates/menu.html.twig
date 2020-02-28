@@ -7,14 +7,14 @@
 
     <hr class="sidebar-divider my-0">
 
-    <li class="nav-item {% if app.request.attributes.get('_route') starts with 'homepage' %}active{% endif %}">
+    <li class="nav-item {% if app.request.pathinfo == '/' %}active{% endif %}">
         <a class="nav-link" href="{{ url('homepage') }}">
             <i class="far fa-chart-bar"></i>
             <span>Statistiques générales</span>
         </a>
     </li>
 
-    <li class="nav-item {% if app.request.attributes.get('_route') starts with 'matchhistory' %}active{% endif %}">
+    <li class="nav-item {% if app.request.pathinfo starts with '/matchhistory' %}active{% endif %}">
         <a class="nav-link" href="{{ url("matchhistory") }}">
             <i class="fas fa-gamepad"></i>
             <span>Historique de parties</span>

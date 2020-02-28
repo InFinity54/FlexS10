@@ -21,12 +21,6 @@
                     {{ message }}
                 </div>
             {% endfor %}
-            <!--<div class="alert alert-success" role="alert">
-                <b>Opération réussie !</b> La partie a été correctement ajoutée à la base de données.
-            </div>
-            <div class="alert alert-success" role="alert">
-                <b>Opération réussie !</b> Les parties envoyées ont été correctement ajoutées à la base de données.
-            </div>-->
         </div>
     </div>
     <div class="row">
@@ -36,7 +30,7 @@
                     <h6 class="m-0 font-weight-bold text-primary">
                         Liste des parties
                         <span class="float-right">
-                            <a href="http://flexs10.local/matchhistory/add">
+                            <a href="{{ url("addmatch") }}">
                                 <i class="fas fa-plus"></i>
                             </a>
                         </span>
@@ -55,8 +49,6 @@
                                             <img src="https://leaguestats.infinity54.fr/riot/img/champion/tiles/{{ compo.champion.name }}_0.jpg" alt="{{ compo.champion.displayName }}" class="checkmatchchamp" />
                                         {% endif %}
                                     {% endfor %}
-                                    <br />
-                                    <a href=""
                                 </td>
                             </tr>
                             {% endfor %}
