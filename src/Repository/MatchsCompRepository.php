@@ -27,7 +27,7 @@ class MatchsCompRepository extends ServiceEntityRepository
             ->from($this->getEntityManager()->getRepository(Champion::class)->getEntityName(), "c")
             ->where("c.name = m.champion")
             ->groupBy("c.displayName")
-            ->orderBy("c.displayName")
+            ->orderBy("COUNT(m.champion)", "DESC")
             ->setMaxResults("10")
             ->getQuery()
             ->getResult();

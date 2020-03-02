@@ -60,17 +60,14 @@ var chartChampions = new Chart(ctx, {
                     display: false,
                     drawBorder: false
                 },
-                ticks: {
-                    maxTicksLimit: 6
-                },
-                maxBarThickness: 25,
+                maxBarThickness: 30,
             }],
             yAxes: [{
                 ticks: {
                     min: 0,
                     max: playedChampsRecord,
                     padding: 5,
-                    stepSize: 1
+                    stepSize: 10
                 },
                 gridLines: {
                     color: "rgb(234, 236, 244)",
