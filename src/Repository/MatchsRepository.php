@@ -18,4 +18,13 @@ class MatchsRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Match::class);
     }
+
+    public function findAllOrderedByDate()
+    {
+        $qb = $this->createQueryBuilder("m");
+        return $qb->select("m")
+            ->orderBy("m.datetime", "DESC")
+            ->getQuery()
+            ->getResult();
+    }
 }
