@@ -19,12 +19,15 @@ class MatchhistoryController extends AbstractController
      */
     public function index()
     {
-        $matchs = $this->getDoctrine()->getRepository(Match::class)->findAllOrderedByDate();
-        $compos = $this->getDoctrine()->getRepository(MatchComp::class)->findAll();
-
         return $this->render('matchhistory/index.html.twig', [
-            "matchs" => $matchs,
-            "compos" => $compos
+            "total" => [
+                "matchs" => $this->getDoctrine()->getRepository(Match::class)->getNumberOfMatchs(),
+                "victory" => $this->getDoctrine()->getRepository(Match::class)->getNumberOfVictory(),
+                "defeat" => $this->getDoctrine()->getRepository(Match::class)->getNumberOfDefeat(),
+                "remake" => $this->getDoctrine()->getRepository(Match::class)->getNumberOfRemake()
+            ],
+            "matchs" => $this->getDoctrine()->getRepository(Match::class)->findAllOrderedByDate(),
+            "compos" => $this->getDoctrine()->getRepository(MatchComp::class)->findAll()
         ]);
     }
 

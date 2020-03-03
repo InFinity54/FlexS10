@@ -27,4 +27,39 @@ class MatchsRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function getNumberOfMatchs()
+    {
+        $qb = $this->createQueryBuilder("m");
+        return $qb->select("COUNT(m.id)")
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function getNumberOfVictory()
+    {
+        $qb = $this->createQueryBuilder("m");
+        return $qb->select("COUNT(m.result)")
+            ->where("m.result = 'WIN'")
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function getNumberOfDefeat()
+    {
+        $qb = $this->createQueryBuilder("m");
+        return $qb->select("COUNT(m.result)")
+            ->where("m.result = 'LOSE'")
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function getNumberOfRemake()
+    {
+        $qb = $this->createQueryBuilder("m");
+        return $qb->select("COUNT(m.result)")
+            ->where("m.result = 'REMAKE'")
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

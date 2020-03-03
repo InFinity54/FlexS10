@@ -24,6 +24,68 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-sm-3 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Parties enregistrées</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total.matchs }} parties</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-gamepad fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Parties gagnées</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total.victory }} victoires</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-trophy fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 mb-4">
+            <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Parties perdues</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total.defeat }} défaites</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-skull-crossbones fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 mb-4">
+            <div class="card border-left-dark shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">Parties annulées</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total.remake }} remakes</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-forward fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-sm-12">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
