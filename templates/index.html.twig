@@ -81,7 +81,7 @@
                                 <td>{{ kda.assists }}</td>
                                 <td>{{ ((kda.kills + kda.assists) / kda.deaths)|number_format(2, ",", " ") }}</td>
                                 <td>{{ (kda.kills / kda.deaths)|number_format(2, ",", " ") }}</td>
-                                <td><button type="button" disabled class="btn btn-primary" style="cursor: not-allowed;">Statistiques détaillées</button></td>
+                                <td><a href="{{ path("player", { id: kda.player }) }}" class="btn btn-primary">Statistiques détaillées</a></td>
                             </tr>
                             {% endfor %}
                             </tbody>
@@ -98,7 +98,7 @@
                     <h6 class="m-0 font-weight-bold text-primary">Champions les plus joués pendant la saison</h6>
                 </div>
                 <div class="card-body">
-                    <div class="chart-pie pt-4">
+                    <div class="chart-bar pt-4">
                         <canvas id="chartChampions"></canvas>
                     </div>
                 </div>
@@ -114,5 +114,5 @@
         var playedChampsValues = [{% if playedchamps is defined %}{{ playedchamps.values|join(",")|raw }}{% endif %}];
         var playedChampsRecord = {% if playedchamps is defined %}{{ playedchamps.record|raw }}{% endif %};
     </script>
-    <script src="{{ asset("js/homepage.js") }}"></script>
+    <script src="{{ asset("js/homepagePlayedChamps.js") }}"></script>
 {% endblock %}

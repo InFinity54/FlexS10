@@ -1,0 +1,117 @@
+{% extends "base.html.twig" %}
+{% block title %}Statistiques détaillées pour {{ player.nickname }}{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/matchhistory.css') }}" />
+{% endblock %}
+
+{% block body %}
+    <div class="d-sm-flex align-items-center justify-content-between mt-3 mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Statistiques détaillées pour {{ player.nickname }}</h1>
+    </div>
+    <div class="row">
+        <div class="col-sm-4 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Depuis le début de saison</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.gamesnumber }} parties jouées <span class="small"> sur {{ totalsavedgames }} au total</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">KDA total</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.kda.total.kills }}/{{ stats.kda.total.deaths }}/{{ stats.kda.total.assists }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">KDA moyen</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.kda.avg.kills }}/{{ stats.kda.avg.deaths }}/{{ stats.kda.avg.assists }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total de creeps tués</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.creeps.total }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Moyenne de creeps tués</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.creeps.avg }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Dégâts totaux infligés aux champions ennemis</h6>
+                </div>
+                <div class="card-body">
+                    <div class="text-center">
+                        <u>Dégâts totaux infligés :</u> {{ stats.dmg.total.number }}
+                    </div>
+                    <div class="chart-pie pt-4">
+                        <canvas id="playerTotalDmg"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Dégâts moyens infligés aux champions ennemis</h6>
+                </div>
+                <div class="card-body">
+                    <div class="text-center">
+                        <u>Dégâts moyens infligés :</u> {{ stats.dmg.avg.number }}
+                    </div>
+                    <div class="chart-pie pt-4">
+                        <canvas id="playerAvgDmg"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script src="{{ asset("vendors/chart.js/Chart.min.js") }}"></script>
+    <script>
+        var totalDmgValues = [{% if stats.dmg.total.values is defined %}{{ stats.dmg.total.values|join(",")|raw }}{% endif %}];
+        var avgDmgValues = [{% if stats.dmg.avg.values is defined %}{{ stats.dmg.avg.values|join(",")|raw }}{% endif %}];
+    </script>
+    <script src="{{ asset("js/charts_globals.js") }}"></script>
+    <script src="{{ asset("js/playerTotalDmg.js") }}"></script>
+    <script src="{{ asset("js/playerAvgDmg.js") }}"></script>
+{% endblock %}

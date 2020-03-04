@@ -7,6 +7,7 @@ use App\Entity\MatchComp;
 use App\Traits\MatchTrait;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MatchhistoryController extends AbstractController
@@ -16,6 +17,7 @@ class MatchhistoryController extends AbstractController
 
     /**
      * @Route("/matchhistory", name="matchhistory")
+     * @return Response
      */
     public function index()
     {
@@ -34,6 +36,7 @@ class MatchhistoryController extends AbstractController
 
     /**
      * @Route("/matchhistory/add", name="addmatch")
+     * @return Response
      */
     public function add()
     {
@@ -43,6 +46,7 @@ class MatchhistoryController extends AbstractController
 
     /**
      * @Route("/matchhistory/save", name="savematch")
+     * @return Response
      */
     public function save()
     {

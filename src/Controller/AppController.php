@@ -1,14 +1,9 @@
 <?php
 namespace App\Controller;
 
-use App\Entity\Champion;
-use App\Entity\Match;
 use App\Entity\MatchComp;
 use App\Entity\MatchStats;
-use App\Entity\Player;
 use App\Traits\ChampionTrait;
-use DateTime;
-use DateTimeZone;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +15,7 @@ class AppController extends AbstractController
 
     /**
      * @Route("/", name="homepage")
+     * @return Response
      */
     public function index()
     {

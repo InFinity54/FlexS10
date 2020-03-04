@@ -20,4 +20,46 @@
             <span>Historique de parties</span>
         </a>
     </li>
+
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Joueurs
+    </div>
+
+    <li class="nav-item {% if app.request.pathinfo starts with '/player/InFinity54' %}active{% endif %}">
+        <a class="nav-link" href="{{ path("player", { id: "InFinity54" }) }}">
+            <i class="fas fa-headset"></i>
+            <span>InFinity54</span>
+        </a>
+    </li>
+
+    <li class="nav-item {% if app.request.pathinfo starts with '/player/TheT%C3%B8xine' %}active{% endif %}">
+        <a class="nav-link" href="{{ path("player", { id: "TheTøxine" }) }}">
+            <i class="fas fa-headset"></i>
+            <span>TheTøxine</span>
+        </a>
+    </li>
+
+    <li class="nav-item {% if app.request.pathinfo starts with '/player/nekkiro' %}active{% endif %}">
+        <a class="nav-link" href="{{ path("player", { id: "nekkiro" }) }}">
+            <i class="fas fa-headset"></i>
+            <span>nekkiro</span>
+        </a>
+    </li>
+
+    <li class="nav-item {% if app.request.pathinfo starts with '/player/Xevort' %}active{% endif %}">
+        <a class="nav-link" href="{{ path("player", { id: "Xevort" }) }}">
+            <i class="fas fa-headset"></i>
+            <span>Xevort</span>
+        </a>
+    </li>
+
+    <li class="nav-item {% if app.request.pathinfo starts with '/player/K%C3%B8r%C3%B8k%C3%B8' %}active{% endif %}">
+        <a class="nav-link" href="{{ path("player", { id: "Kørøkø" }) }}">
+            <i class="fas fa-headset"></i>
+            <span>Kørøkø</span>
+        </a>
+    </li>
 </ul>
