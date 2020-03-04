@@ -43,7 +43,11 @@ Trait MatchTrait
 
                 if ($matchresult === "")
                 {
-                    if ($details->stats->win === false)
+                    if (($details->stats->win === true || $details->stats->win === false) && intdiv(intval($json->gameDuration), 60) < 5)
+                    {
+                        $matchresult = "REMAKE";
+                    }
+                    else if ($details->stats->win === false)
                     {
                         $matchresult = "LOSE";
                     }
