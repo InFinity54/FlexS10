@@ -109,6 +109,7 @@
 
 {% block js %}
     <script src="{{ asset("vendors/chart.js/Chart.min.js") }}"></script>
+    <script src="{{ asset("js/charts_globals.js") }}"></script>
     <script type="text/javascript">
         var playedChampsLabels = ["{% if playedchamps is defined %}{{ playedchamps.labels|join("\", \"")|raw }}{% endif %}"];
         var playedChampsValues = [{% if playedchamps is defined %}{{ playedchamps.values|join(",")|raw }}{% endif %}];
