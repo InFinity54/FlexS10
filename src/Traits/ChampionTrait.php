@@ -11,7 +11,14 @@ Trait ChampionTrait
         {
             if (intval($champid) === intval($champ->key))
             {
-                return $champ->id;
+                if ($champ->id === "Fiddlesticks")
+                {
+                    return "FiddleSticks";
+                }
+                else
+                {
+                    return $champ->id;
+                }
             }
         }
 
@@ -26,7 +33,14 @@ Trait ChampionTrait
         {
             if (intval($champid) === intval($champ->key))
             {
-                return $champ->name;
+                if ($champ->name === "Fiddlesticks")
+                {
+                    return "FiddleSticks";
+                }
+                else
+                {
+                    return $champ->name;
+                }
             }
         }
 
