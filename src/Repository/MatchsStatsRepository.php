@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\MatchStats;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @method MatchStats|null find($id, $lockMode = null, $lockVersion = null)
@@ -21,35 +22,56 @@ class MatchsStatsRepository extends ServiceEntityRepository
 
     public function getBestKills()
     {
-        return $this->createQueryBuilder("s")
-            ->select('(s.player) AS player', '(SUM(s.kills)) AS number')
-            ->groupBy("s.player")
-            ->orderBy("SUM(s.kills)", "DESC")
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getResult()[0];
+        try
+        {
+            return $this->createQueryBuilder("s")
+                ->select('(s.player) AS player', '(SUM(s.kills)) AS number')
+                ->groupBy("s.player")
+                ->orderBy("SUM(s.kills)", "DESC")
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getResult()[0];
+        }
+        catch (Exception $e)
+        {
+            return null;
+        }
     }
 
     public function getBestDeaths()
     {
-        return $this->createQueryBuilder("s")
-            ->select('(s.player) AS player', '(SUM(s.deaths)) AS number')
-            ->groupBy("s.player")
-            ->orderBy("SUM(s.deaths)", "DESC")
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getResult()[0];
+        try
+        {
+            return $this->createQueryBuilder("s")
+                ->select('(s.player) AS player', '(SUM(s.deaths)) AS number')
+                ->groupBy("s.player")
+                ->orderBy("SUM(s.deaths)", "DESC")
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getResult()[0];
+        }
+        catch (Exception $e)
+        {
+            return null;
+        }
     }
 
     public function getBestAssists()
     {
-        return $this->createQueryBuilder("s")
-            ->select('(s.player) AS player', '(SUM(s.assists)) AS number')
-            ->groupBy("s.player")
-            ->orderBy("SUM(s.assists)", "DESC")
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getResult()[0];
+        try
+        {
+            return $this->createQueryBuilder("s")
+                ->select('(s.player) AS player', '(SUM(s.assists)) AS number')
+                ->groupBy("s.player")
+                ->orderBy("SUM(s.assists)", "DESC")
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getResult()[0];
+        }
+        catch (Exception $e)
+        {
+            return null;
+        }
     }
 
     public function getKdas()

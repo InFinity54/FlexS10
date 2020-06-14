@@ -99,23 +99,29 @@
                     </h6>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            {% for match in matchs %}
-                            <tr>
-                                <td>
-                                    Match N°{{ match.id }} | Partie terminée le {{ match.datetime|date("d/m/Y à H:i") }} | Durée de la partie : {{ match.duration }}
-                                    <br /><br />
-                                    {% for compo in compos %}
-                                        {% if compo.match.id == match.id %}
-                                            <img src="https://leaguestats.infinity54.fr/riot/img/champion/tiles/{{ compo.champion.name }}_0.jpg" alt="{{ compo.champion.displayName }}" class="checkmatchchamp" />
-                                        {% endif %}
-                                    {% endfor %}
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </table>
-                    </div>
+                    {% if total.matchs == 0 %}
+                        <div class="alert alert-info">
+                            La base de données ne contient pour le moment aucune partie.
+                        </div>
+                    {% else %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                {% for match in matchs %}
+                                    <tr>
+                                        <td>
+                                            Match N°{{ match.id }} | Partie terminée le {{ match.datetime|date("d/m/Y à H:i") }} | Durée de la partie : {{ match.duration }}
+                                            <br /><br />
+                                            {% for compo in compos %}
+                                                {% if compo.match.id == match.id %}
+                                                    <img src="https://leaguestats.infinity54.fr/riot/img/champion/tiles/{{ compo.champion.name }}_0.jpg" alt="{{ compo.champion.displayName }}" class="checkmatchchamp" />
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

@@ -6,114 +6,135 @@
         <h1 class="h3 mb-0 text-gray-800">Statistiques générales</h1>
     </div>
     <div class="row">
-        <div class="col-sm-4 mb-4">
-            <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Le plus meurtrier</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ bestkills.player }} <span class="small">{{ bestkills.number }} kills</span></div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-trophy fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-4 mb-4">
-            <div class="card border-left-danger shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Le plus suicidaire</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ bestdeaths.player }} <span class="small">{{ bestdeaths.number }} morts</span></div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-skull-crossbones fa-2x text-gray-300"></i>
+        {% if bestkills is not null %}
+            <div class="col-sm-4 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Le plus meurtrier</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ bestkills.player }} <span class="small">{{ bestkills.number }} kills</span></div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-trophy fa-2x text-gray-300"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-sm-4 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Le bon pote</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ bestassists.player }} <span class="small">{{ bestassists.number }} assistances</span></div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-people-carry fa-2x text-gray-300"></i>
+            <div class="col-sm-4 mb-4">
+                <div class="card border-left-danger shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Le plus suicidaire</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ bestdeaths.player }} <span class="small">{{ bestdeaths.number }} morts</span></div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-skull-crossbones fa-2x text-gray-300"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <div class="col-sm-4 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Le bon pote</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ bestassists.player }} <span class="small">{{ bestassists.number }} assistances</span></div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-people-carry fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-sm-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Information</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-info">
+                            La base de données ne contient pour le moment aucune partie. Il est donc impossible d'afficher les statistiques détaillées des joueurs.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
     </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Total des KDA</h6>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th>Joueur</th>
-                                <th>Kills</th>
-                                <th>Morts</th>
-                                <th>Assists</th>
-                                <th>KDA</th>
-                                <th>KD</th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for kda in kdas %}
-                            <tr>
-                                <td>{{ kda.player }}</td>
-                                <td>{{ kda.kills }}</td>
-                                <td>{{ kda.deaths }}</td>
-                                <td>{{ kda.assists }}</td>
-                                <td>{{ ((kda.kills + kda.assists) / kda.deaths)|number_format(2, ",", " ") }}</td>
-                                <td>{{ (kda.kills / kda.deaths)|number_format(2, ",", " ") }}</td>
-                                <td><a href="{{ path("player", { id: kda.player }) }}" class="btn btn-primary">Statistiques détaillées</a></td>
-                            </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
+    {% if bestkills is not null %}
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Total des KDA</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Joueur</th>
+                                    <th>Kills</th>
+                                    <th>Morts</th>
+                                    <th>Assists</th>
+                                    <th>KDA</th>
+                                    <th>KD</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for kda in kdas %}
+                                <tr>
+                                    <td>{{ kda.player }}</td>
+                                    <td>{{ kda.kills }}</td>
+                                    <td>{{ kda.deaths }}</td>
+                                    <td>{{ kda.assists }}</td>
+                                    <td>{{ ((kda.kills + kda.assists) / kda.deaths)|number_format(2, ",", " ") }}</td>
+                                    <td>{{ (kda.kills / kda.deaths)|number_format(2, ",", " ") }}</td>
+                                    <td><a href="{{ path("player", { id: kda.player }) }}" class="btn btn-primary">Statistiques détaillées</a></td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12 mb-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Champions les plus joués pendant la saison</h6>
-                </div>
-                <div class="card-body">
-                    <div class="chart-bar pt-4">
-                        <canvas id="chartChampions"></canvas>
+    {% endif %}
+    {% if bestkills is not null %}
+        <div class="row">
+            <div class="col-sm-12 mb-4">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Champions les plus joués pendant la saison</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-bar pt-4">
+                            <canvas id="chartChampions"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    {% endif %}
 {% endblock %}
 
 {% block js %}
-    <script src="{{ asset("vendors/chart.js/Chart.min.js") }}"></script>
-    <script src="{{ asset("js/charts_globals.js") }}"></script>
-    <script type="text/javascript">
-        var playedChampsLabels = ["{% if playedchamps is defined %}{{ playedchamps.labels|join("\", \"")|raw }}{% endif %}"];
-        var playedChampsValues = [{% if playedchamps is defined %}{{ playedchamps.values|join(",")|raw }}{% endif %}];
-        var playedChampsRecord = {% if playedchamps is defined %}{{ playedchamps.record|raw }}{% endif %};
-    </script>
-    <script src="{{ asset("js/homepagePlayedChamps.js") }}"></script>
+    {% if bestkills is not null %}
+        <script src="{{ asset("vendors/chart.js/Chart.min.js") }}"></script>
+        <script src="{{ asset("js/charts_globals.js") }}"></script>
+        <script type="text/javascript">
+            var playedChampsLabels = ["{% if playedchamps is defined %}{{ playedchamps.labels|join("\", \"")|raw }}{% endif %}"];
+            var playedChampsValues = [{% if playedchamps is defined %}{{ playedchamps.values|join(",")|raw }}{% endif %}];
+            var playedChampsRecord = {% if playedchamps is defined %}{{ playedchamps.record|raw }}{% endif %};
+        </script>
+        <script src="{{ asset("js/homepagePlayedChamps.js") }}"></script>
+    {% endif %}
 {% endblock %}
