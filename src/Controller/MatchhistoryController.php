@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Champion;
 use App\Entity\Match;
 use App\Entity\MatchComp;
+use App\Entity\MatchStats;
+use App\Entity\Player;
 use App\Traits\MatchTrait;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -88,5 +91,91 @@ class MatchhistoryController extends AbstractController
             $this->addFlash("error", "Aucune information n'a été reçue concernant la ou les parties à ajouter.");
             return $this->redirectToRoute("addmatch");
         }
+    }
+
+
+    /**
+     * @Route("/matchhistory/recreatedb", name="recreate_database")
+     * @return Response
+     */
+    public function recreateDatabase()
+    {
+        try
+        {
+            $this->clearDatabase();
+            $this->moveAllPreviousFiles();
+            $oldGames = $this->getAllPreviousFiles();
+
+            foreach ($oldGames as $oldGame)
+            {
+                $matchId = str_replace(".json", "", $oldGame);
+                $json = file_get_contents(realpath($this->appKernel->getProjectDir()."/files/games/old/".$oldGame));
+                $this->saveMatch($this->getDoctrine()->getManager(), $json);
+                $this->saveMatchToServer($json, $matchId);
+                unlink(realpath($this->appKernel->getProjectDir()."/files/games/old/".$oldGame));
+            }
+
+            rmdir(realpath($this->appKernel->getProjectDir()."/files/games/old/"));
+
+            $this->addFlash("success", "La base de données à été recréée.");
+            return $this->redirectToRoute("matchhistory");
+        }
+        catch (Exception $e)
+        {
+            $this->addFlash("error", "Une erreur est survenue durant la procédure. ".$e->getMessage());
+            return $this->redirectToRoute("addmatch");
+        }
+    }
+
+    private function clearDatabase()
+    {
+        $manager = $this->getDoctrine()->getManager();
+        $champs = $manager->getRepository(Champion::class)->findAll();
+        $matchs = $manager->getRepository(Match::class)->findAll();
+        $matchCompos = $manager->getRepository(MatchComp::class)->findAll();
+        $matchStats = $manager->getRepository(MatchStats::class)->findAll();
+
+        foreach ($champs as $champ)
+        {
+            $manager->remove($champ);
+        }
+
+        foreach ($matchs as $match)
+        {
+            $manager->remove($match);
+        }
+
+        foreach ($matchCompos as $matchCompo)
+        {
+            $manager->remove($matchCompo);
+        }
+
+        foreach ($matchStats as $matchStat)
+        {
+            $manager->remove($matchStat);
+        }
+
+        $manager->flush();
+    }
+
+    private function moveAllPreviousFiles()
+    {
+        if (!is_dir(realpath($this->appKernel->getProjectDir()."/files/games/old")))
+        {
+            mkdir($this->appKernel->getProjectDir()."/files/games/old");
+        }
+
+        foreach (preg_grep('~\.(json)$~', scandir(realpath($this->appKernel->getProjectDir()."/files/games/"))) as $file)
+        {
+            $fullname = realpath($this->appKernel->getProjectDir()."/files/games/".$file);
+            $newfullname = str_replace("/files/games", "/files/games/old", $fullname);
+            $newfullname = str_replace("\\files\\games", "\\files\\games\\old", $newfullname);
+            rename($fullname, $newfullname);
+        }
+    }
+
+    private function getAllPreviousFiles()
+    {
+        return preg_grep('~\.(json)$~', scandir(realpath($this->appKernel->getProjectDir()."/files/games/old/")));
     }
 }
