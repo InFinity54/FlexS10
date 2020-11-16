@@ -17,7 +17,6 @@ class MatchhistoryController extends AbstractController
 {
     use MatchTrait;
 
-
     /**
      * @Route("/matchhistory", name="matchhistory")
      * @return Response
@@ -57,7 +56,7 @@ class MatchhistoryController extends AbstractController
         {
             try
             {
-                $this->saveMatch($this->getDoctrine()->getManager(), file_get_contents("https://euw1.api.riotgames.com/lol/match/v4/matches/".$_POST["matchid"]."?api_key=".$_ENV['RIOT_APIKEY']));
+                $this->saveMatch($this->getDoctrine()->getManager(), json_decode(file_get_contents("https://euw1.api.riotgames.com/lol/match/v4/matches/" . $_POST["matchid"] . "?api_key=" . $_ENV['RIOT_APIKEY']), true));
                 $this->addFlash("success", "Le match N°".$_POST["matchid"]." a été correctement ajouté !");
             }
             catch (Exception $e)
@@ -68,13 +67,14 @@ class MatchhistoryController extends AbstractController
 
             return $this->redirectToRoute("matchhistory");
         }
-        else if ($_POST["sendtype"] === "multiple")
+
+        if ($_POST["sendtype"] === "multiple")
         {
             try
             {
-                for ($i = 0; $i < count($_FILES["matchfiles"]["tmp_name"]); $i++)
+                for ($i = 0, $iMax = count($_FILES["matchfiles"]["tmp_name"]); $i < $iMax; $i++)
                 {
-                    $this->saveMatch($this->getDoctrine()->getManager(), file_get_contents($_FILES["matchfiles"]["tmp_name"][$i]));
+                    $this->saveMatch($this->getDoctrine()->getManager(), json_decode(file_get_contents($_FILES["matchfiles"]["tmp_name"][$i]), true));
                     $this->addFlash("success", "Le match N°".str_replace(".json", "", $_FILES["matchfiles"]["name"][$i])." a été correctement ajouté !");
                 }
             }
@@ -86,11 +86,9 @@ class MatchhistoryController extends AbstractController
 
             return $this->redirectToRoute("matchhistory");
         }
-        else
-        {
-            $this->addFlash("error", "Aucune information n'a été reçue concernant la ou les parties à ajouter.");
-            return $this->redirectToRoute("addmatch");
-        }
+
+        $this->addFlash("error", "Aucune information n'a été reçue concernant la ou les parties à ajouter.");
+        return $this->redirectToRoute("addmatch");
     }
 
 
@@ -102,22 +100,20 @@ class MatchhistoryController extends AbstractController
     {
         try
         {
+            $i = 0;
             $this->clearDatabase();
-            $this->moveAllPreviousFiles();
             $oldGames = $this->getAllPreviousFiles();
 
             foreach ($oldGames as $oldGame)
             {
-                $matchId = str_replace(".json", "", $oldGame);
-                $json = file_get_contents(realpath($this->appKernel->getProjectDir()."/files/games/old/".$oldGame));
-                $this->saveMatch($this->getDoctrine()->getManager(), $json);
-                $this->saveMatchToServer($json, $matchId);
-                unlink(realpath($this->appKernel->getProjectDir()."/files/games/old/".$oldGame));
+                if (!$this->getDoctrine()->getRepository(Match::class)->find(str_replace(".json", "", $oldGame))) {
+                    $json = json_decode(file_get_contents(realpath($this->appKernel->getProjectDir()."/files/games/".$oldGame)), true);
+                    $this->saveMatch($this->getDoctrine()->getManager(), $json, true);
+                }
+                $i++;
             }
 
-            rmdir(realpath($this->appKernel->getProjectDir()."/files/games/old/"));
-
-            $this->addFlash("success", "La base de données à été recréée.");
+            $this->addFlash("success", "La base de données à été recréée. ".$i." partie(s) sur ".count($oldGames)." ont été réajoutés.");
             return $this->redirectToRoute("matchhistory");
         }
         catch (Exception $e)
@@ -158,24 +154,8 @@ class MatchhistoryController extends AbstractController
         $manager->flush();
     }
 
-    private function moveAllPreviousFiles()
-    {
-        if (!is_dir(realpath($this->appKernel->getProjectDir()."/files/games/old")))
-        {
-            mkdir($this->appKernel->getProjectDir()."/files/games/old");
-        }
-
-        foreach (preg_grep('~\.(json)$~', scandir(realpath($this->appKernel->getProjectDir()."/files/games/"))) as $file)
-        {
-            $fullname = realpath($this->appKernel->getProjectDir()."/files/games/".$file);
-            $newfullname = str_replace("/files/games", "/files/games/old", $fullname);
-            $newfullname = str_replace("\\files\\games", "\\files\\games\\old", $newfullname);
-            rename($fullname, $newfullname);
-        }
-    }
-
     private function getAllPreviousFiles()
     {
-        return preg_grep('~\.(json)$~', scandir(realpath($this->appKernel->getProjectDir()."/files/games/old/")));
+        return preg_grep('~\.(json)$~', scandir(realpath($this->appKernel->getProjectDir()."/files/games/")));
     }
 }

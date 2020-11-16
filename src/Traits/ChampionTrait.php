@@ -5,20 +5,13 @@ Trait ChampionTrait
 {
     protected function getChampionName($champid)
     {
-        $json = json_decode(file_get_contents("https://leaguestats.infinity54.fr/riot/latest/data/fr_FR/champion.json"));
+        $json = json_decode(file_get_contents("https://leaguestats.infinity54.fr/riot/lol/latest/data/fr_FR/champion.json"), true);
 
-        foreach ($json->data as $champ)
+        foreach ($json["data"] as $champ)
         {
-            if (intval($champid) === intval($champ->key))
+            if ((int)$champid === (int)$champ["key"])
             {
-                if ($champ->id === "Fiddlesticks")
-                {
-                    return "FiddleSticks";
-                }
-                else
-                {
-                    return $champ->id;
-                }
+                return $champ["id"];
             }
         }
 
@@ -27,20 +20,13 @@ Trait ChampionTrait
 
     protected function getChampionDisplayName($champid)
     {
-        $json = json_decode(file_get_contents("https://leaguestats.infinity54.fr/riot/latest/data/fr_FR/champion.json"));
+        $json = json_decode(file_get_contents("https://leaguestats.infinity54.fr/riot/lol/latest/data/fr_FR/champion.json"), true);
 
-        foreach ($json->data as $champ)
+        foreach ($json["data"] as $champ)
         {
-            if (intval($champid) === intval($champ->key))
+            if ((int)$champid === (int)$champ["key"])
             {
-                if ($champ->name === "Fiddlesticks")
-                {
-                    return "FiddleSticks";
-                }
-                else
-                {
-                    return $champ->name;
-                }
+                return $champ["name"];
             }
         }
 

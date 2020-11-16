@@ -1,7 +1,8 @@
-RewriteCond %{HTTPS} off
-RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-RewriteCond %{HTTP_HOST} !^www\. [NC]
-RewriteRule .* https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^flexs10.infinity54.fr$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^flexs10.infinity54.fr$
+RewriteCond %{REQUEST_URI} !/
+RewriteRule (.*) /$1 [L]
 
 # Use the front controller as index file. It serves as a fallback solution when
 # every other rewrite/redirect fails (e.g. in an aliased environment without
